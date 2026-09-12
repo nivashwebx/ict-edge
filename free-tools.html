@@ -1,0 +1,292 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade with Nivash | Free Tools</title><style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1220;
+    color: #ffffff;
+}
+
+header {
+    text-align: center;
+    padding: 30px 15px;
+    background: #111b2e;
+    border-bottom: 1px solid #263653;
+}
+
+header h1 { margin: 0 0 8px; }
+header p { margin: 0; color: #aebbd0; }
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px 15px;
+}
+
+.tool {
+    background: #111b2e;
+    border: 1px solid #263653;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.tool h2 { margin-top: 0; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+}
+
+label {
+    display: block;
+    color: #b8c5d9;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 9px;
+    border: 1px solid #3a4c68;
+    background: #08101d;
+    color: white;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 18px;
+    margin-top: 15px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 9px;
+    background: #22c997;
+    color: #06130f;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.reset {
+    background: #33445f;
+    color: white;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #08101d;
+    border: 1px solid #2c3d58;
+    line-height: 1.8;
+}
+
+.big {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.note {
+    color: #8fa1ba;
+    font-size: 12px;
+}
+
+footer {
+    text-align: center;
+    color: #71829c;
+    padding: 25px;
+}
+</style></head><body><header>
+    <h1>Trade with Nivash 📈</h1>
+    <p>Free Trading Tools</p>
+</header><div class="container"><section class="tool">
+<h2>📊 Position Size Calculator</h2><div class="grid">
+<div>
+<label>Account Balance</label>
+<input id="balance" type="number" placeholder="1000">
+</div><div>
+<label>Risk %</label>
+<input id="risk" type="number" placeholder="1">
+</div><div>
+<label>Entry Price</label>
+<input id="entry" type="number" placeholder="4500">
+</div><div>
+<label>Stop Loss Price</label>
+<input id="sl" type="number" placeholder="4490">
+</div><div>
+<label>Contract Value / 1 Lot</label>
+<input id="contract" type="number" placeholder="100">
+</div>
+</div><button onclick="calculatePosition()">Calculate</button>
+<button class="reset" onclick="resetPosition()">Reset</button>
+
+<div id="positionResult" class="result">
+Your final result will appear here.
+</div><p class="note">
+Contract specifications can differ between brokers and instruments.
+</p>
+</section><section class="tool">
+<h2>⚖️ Risk / Reward Calculator</h2><div class="grid">
+<div>
+<label>Entry Price</label>
+<input id="rrEntry" type="number" placeholder="4500">
+</div><div>
+<label>Stop Loss</label>
+<input id="rrSL" type="number" placeholder="4490">
+</div><div>
+<label>Take Profit</label>
+<input id="rrTP" type="number" placeholder="4520">
+</div>
+</div><button onclick="calculateRR()">Calculate</button>
+<button class="reset" onclick="resetRR()">Reset</button>
+
+<div id="rrResult" class="result">
+Your final result will appear here.
+</div>
+</section><section class="tool">
+<h2>💰 Profit / Loss Calculator</h2><div class="grid">
+<div>
+<label>Entry Price</label>
+<input id="plEntry" type="number" placeholder="4500">
+</div><div>
+<label>Exit Price</label>
+<input id="plExit" type="number" placeholder="4520">
+</div><div>
+<label>Quantity / Units</label>
+<input id="quantity" type="number" placeholder="1">
+</div>
+</div><button onclick="calculatePL()">Calculate</button>
+<button class="reset" onclick="resetPL()">Reset</button>
+
+<div id="plResult" class="result">
+Your final result will appear here.
+</div><p class="note">
+Spread, commission, swap and slippage are not included.
+</p>
+</section></div><footer>
+Trade with discipline. Build with purpose. ⚡
+</footer><script>
+
+function calculatePosition() {
+
+let balance = Number(document.getElementById("balance").value);
+let risk = Number(document.getElementById("risk").value);
+let entry = Number(document.getElementById("entry").value);
+let sl = Number(document.getElementById("sl").value);
+let contract = Number(document.getElementById("contract").value);
+
+if (!balance || !risk || !entry || !sl || !contract || entry === sl) {
+document.getElementById("positionResult").innerHTML =
+"⚠️ Please enter valid values.";
+return;
+}
+
+let riskMoney = balance * risk / 100;
+let stopDistance = Math.abs(entry - sl);
+let lotSize = riskMoney / (stopDistance * contract);
+
+document.getElementById("positionResult").innerHTML =
+"<b>Risk Amount:</b> " + riskMoney.toFixed(2) +
+"<br><b>Stop Distance:</b> " + stopDistance.toFixed(4) +
+"<br><br><span class='big'>Estimated Lot Size: " +
+lotSize.toFixed(4) + " lots</span>";
+}
+
+
+function calculateRR() {
+
+let entry = Number(document.getElementById("rrEntry").value);
+let sl = Number(document.getElementById("rrSL").value);
+let tp = Number(document.getElementById("rrTP").value);
+
+if (!entry || !sl || !tp || entry === sl || entry === tp) {
+document.getElementById("rrResult").innerHTML =
+"⚠️ Please enter valid values.";
+return;
+}
+
+let risk = Math.abs(entry - sl);
+let reward = Math.abs(tp - entry);
+let ratio = reward / risk;
+
+document.getElementById("rrResult").innerHTML =
+"<b>Risk:</b> " + risk.toFixed(4) +
+"<br><b>Reward:</b> " + reward.toFixed(4) +
+"<br><br><span class='big'>Risk : Reward = 1 : " +
+ratio.toFixed(2) + "</span>";
+}
+
+
+function calculatePL() {
+
+let entry = Number(document.getElementById("plEntry").value);
+let exit = Number(document.getElementById("plExit").value);
+let quantity = Number(document.getElementById("quantity").value);
+
+if (!entry || !exit || !quantity) {
+document.getElementById("plResult").innerHTML =
+"⚠️ Please enter valid values.";
+return;
+}
+
+let difference = exit - entry;
+let result = difference * quantity;
+
+if (result >= 0) {
+
+document.getElementById("plResult").innerHTML =
+"<b>Price Difference:</b> " +
+difference.toFixed(4) +
+"<br><br><span class='big'>Estimated Profit: " +
+result.toFixed(2) + "</span>";
+
+} else {
+
+document.getElementById("plResult").innerHTML =
+"<b>Price Difference:</b> " +
+difference.toFixed(4) +
+"<br><br><span class='big'>Estimated Loss: " +
+Math.abs(result).toFixed(2) + "</span>";
+}
+}
+
+
+function resetPosition() {
+document.getElementById("balance").value = "";
+document.getElementById("risk").value = "";
+document.getElementById("entry").value = "";
+document.getElementById("sl").value = "";
+document.getElementById("contract").value = "";
+
+document.getElementById("positionResult").innerHTML =
+"Your final result will appear here.";
+}
+
+
+function resetRR() {
+document.getElementById("rrEntry").value = "";
+document.getElementById("rrSL").value = "";
+document.getElementById("rrTP").value = "";
+
+document.getElementById("rrResult").innerHTML =
+"Your final result will appear here.";
+}
+
+
+function resetPL() {
+document.getElementById("plEntry").value = "";
+document.getElementById("plExit").value = "";
+document.getElementById("quantity").value = "";
+
+document.getElementById("plResult").innerHTML =
+"Your final result will appear here.";
+}
+
+</script></body>
+</html>
