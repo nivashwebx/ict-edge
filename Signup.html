@@ -1,1 +1,193 @@
-singup.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICT EDGE — Sign Up</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#080a0f;
+  color:#f4f6f8;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.signup-box{
+  width:100%;
+  max-width:420px;
+  background:#10131a;
+  border:1px solid #232832;
+  border-radius:18px;
+  padding:32px;
+}
+
+.logo{
+  text-align:center;
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.logo span{
+  color:#8ee6b1;
+}
+
+.subtitle{
+  text-align:center;
+  color:#929aa7;
+  margin-bottom:28px;
+}
+
+label{
+  display:block;
+  margin-bottom:7px;
+  color:#cdd3dc;
+  font-size:14px;
+}
+
+input{
+  width:100%;
+  padding:13px;
+  margin-bottom:18px;
+  border-radius:9px;
+  border:1px solid #303641;
+  background:#0d1117;
+  color:white;
+  outline:none;
+}
+
+input:focus{
+  border-color:#8ee6b1;
+}
+
+button{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:9px;
+  background:#8ee6b1;
+  color:#07100b;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+#message{
+  margin-top:15px;
+  text-align:center;
+  font-size:14px;
+  color:#8ee6b1;
+}
+
+.login{
+  text-align:center;
+  margin-top:20px;
+  color:#929aa7;
+  font-size:14px;
+}
+
+.login a{
+  color:#8ee6b1;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="signup-box">
+
+  <div class="logo">
+    ICT <span>EDGE</span>
+  </div>
+
+  <p class="subtitle">Create your trading account</p>
+
+  <form id="signupForm">
+
+    <label>Email</label>
+    <input
+      type="email"
+      id="email"
+      placeholder="Enter your email"
+      required
+    >
+
+    <label>Password</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Create a password"
+      minlength="6"
+      required
+    >
+
+    <button type="submit">Create Account</button>
+
+  </form>
+
+  <div id="message"></div>
+
+  <div class="login">
+    Already have an account?
+    <a href="login.html">Login</a>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+
+const SUPABASE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+document.getElementById("signupForm").addEventListener("submit", async function(e){
+
+  e.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const message = document.getElementById("message");
+
+  message.textContent = "Creating account...";
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  if(error){
+    message.textContent = error.message;
+    return;
+  }
+
+  message.textContent =
+    "Account created! Check your email to confirm your account.";
+
+});
+</script>
+
+</body>
+</html>
